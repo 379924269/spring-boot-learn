@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dnp.bootstarp.dao.DeviceMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dnp.bootstarp.model.Device">
+        <id column="id" property="id"/>
+        <result column="serial_number" property="serialNumber"/>
+        <result column="downloads" property="downloads"/>
+        <result column="config_id" property="configId"/>
+        <result column="application_id" property="applicationId"/>
+        <result column="location_id" property="locationId"/>
+        <result column="model_id" property="modelId"/>
+        <result column="tfcard_id" property="tfcardId"/>
+        <result column="token" property="token"/>
+        <result column="expiration_time" property="expirationTime"/>
+        <result column="created_date" property="createdDate"/>
+        <result column="adaption_date" property="adaptionDate"/>
+    </resultMap>
+
+    <sql id="commomOrder">
+        <if test="pageVo.order != null || pageVo.order != ''">
+            ORDER BY  ${pageVo.sort} ${pageVo.order}
+        </if>
+    </sql>
+
+    <select id="findAllRelation" resultType="map">
+        SELECT d.*, l.name AS locationName, m.name AS modelName FROM `device` d LEFT JOIN `location` l ON d.location_id
+        = l.id LEFT JOIN `model` m ON d.model_id = m.id
+        <where>
+            <if test="search != null || search != ''">
+                d.serial_number LIKE concat(concat('%',#{search}),'%')
+            </if>
+        </where>
+
+        <include refid="commomOrder"/>
+    </select>
+
+    <select id="countAllRelation" resultType="int">
+        SELECT count(*) FROM `device` d LEFT JOIN `location` l ON d.location_id
+        = l.id LEFT JOIN `model` m ON d.model_id = m.id
+        <where>
+            <if test="search != null || search != ''">
+                d.serial_number LIKE concat(concat('%',#{search}),'%')
+            </if>
+        </where>
+    </select>
+</mapper>
