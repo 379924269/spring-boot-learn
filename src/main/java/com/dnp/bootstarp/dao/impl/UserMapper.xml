@@ -12,4 +12,9 @@
         <result column="role_id" property="roleId"/>
     </resultMap>
 
+
+    <select id="selectByName" resultMap="BaseResultMap">
+     SELECT * FROM user u WHERE u.email = #{username}
+    </select>
 </mapper>
+

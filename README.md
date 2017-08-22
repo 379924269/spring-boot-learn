@@ -36,3 +36,4 @@ java -jar guns-1.0.0-SNAPSHOT.jar
 4. Spring 4.3.8.RELEASE
 5. Shiro 1.4.0
 6. Druid 1.0.31
+7. kaptcha(com.github.penggle, 生成验证码)

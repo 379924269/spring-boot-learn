@@ -20,7 +20,7 @@
 
     <sql id="commomOrder">
         <if test="pageVo.order != null || pageVo.order != ''">
-            ORDER BY  ${pageVo.sort} ${pageVo.order}
+            ORDER BY ${pageVo.sort} ${pageVo.order}
         </if>
     </sql>
 

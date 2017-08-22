@@ -10,5 +10,7 @@
         <result column="res_key" property="resKey"/>
         <result column="res_url" property="resUrl"/>
     </resultMap>
-
+    <select id="selectByRoleId" resultMap="BaseResultMap">
+       SELECT r.* FROM resource r LEFT JOIN res_role rr on r.id = rr.resource_id WHERE rr.role_id = #{roleId}
+    </select>
 </mapper>
