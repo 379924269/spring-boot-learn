@@ -1,0 +1,7 @@
+server:
+  port: 300
+  context-path: /demo300/
+
+#  swagger开关
+demo:
+  swagger-open: false

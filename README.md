@@ -24,8 +24,12 @@ java -jar guns-1.0.0-SNAPSHOT.jar
 ```
 并打包放入到tomcat中执行
 
+在springboot项目部署到tomcat下的时候遇到的问题：
+<br>springboot要求tomcat版本为8.0即以上，其他的解决思路参考：http://www.jb51.net/article/123206.htm
+
+
 ### 注意
-最新版项目最低支持jdk1.7
+1. 最新版项目最低支持jdk1.7 
 
 ## 项目所用框架
 ### 后端
@@ -37,3 +41,6 @@ java -jar guns-1.0.0-SNAPSHOT.jar
 5. Shiro 1.4.0
 6. Druid 1.0.31
 7. kaptcha(com.github.penggle, 生成验证码)
+
+### 灵活的打包配置profile，打包一般分为（测试、开发、发布）
+参考地址：https://blog.csdn.net/lihe2008125/article/details/50443491
