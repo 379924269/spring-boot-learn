@@ -31,6 +31,11 @@ java -jar guns-1.0.0-SNAPSHOT.jar
 ### 注意
 1. 最新版项目最低支持jdk1.7 
 
+2. lockback.xml 日志生成在哪里(windows,unix没测)，生成路径如下：
+- 如果log.dir = ../logs/项目名称/logs/日志名称，会生成到tomcat下面的logs里面
+- 如果log.dir = logs/日志名称,会生成到tomcat/bin下面
+- 如果log.dir=/log/日志名称,会生成到项目跟目录下面
+
 ## 项目所用框架
 ### 后端
 ### 后端

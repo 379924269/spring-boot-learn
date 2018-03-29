@@ -24,35 +24,22 @@
     默认是DEBUG。
     <root>可以包含零个或多个<appender-ref>元素，标识这个appender将会添加到这个loger。
 -->
+
 <configuration scan="true" scanPeriod="60 seconds">
-    <contextName>
-        huazai_springboot
-    </contextName>
-    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+    <contextName>huazai_springboot</contextName>
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%d {ptt} %p [%c] - %m%n</pattern>
         </encoder>
     </appender>
-    <appender name="springboot"
-              class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <!-- <Encoding>UTF-8</Encoding> -->
+
+    <appender name="springboot" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--如果不知道日志在哪里，可以看下README中说明-->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>logs/logback/springboot_%d{yyyy-M-d}.log
-            </FileNamePattern>
+            <FileNamePattern>../logs/demo_%d{yyyy-M-d}.log</FileNamePattern>
             <!-- 保留天数 -->
-            <MaxHistory>10</MaxHistory>
-        </rollingPolicy>
-        <encoder>
-            <pattern>%d {ptt} %p [%c] - %m%n</pattern>
-        </encoder>
-    </appender>
-    <appender name="smile"
-              class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>
-                logs/logback/smile_%d{yyyy-M-d}.log
-            </FileNamePattern>
-            <MaxHistory>10</MaxHistory>
+            <MaxHistory>30</MaxHistory>
         </rollingPolicy>
         <encoder>
             <pattern>%d {ptt} %p [%c] - %m%n</pattern>
@@ -60,15 +47,21 @@
     </appender>
 
     <!-- name属性指定的某个包，答应指定某个包下面的所有日志 -->
-    <logger name="org.springframework.boot" level="debug"
-            additivity="false">
-        <appender-ref ref="springboot"/>
-    </logger>
-    <logger name="druid.sql.Statement" level="debug" additivity="false">
-        <appender-ref ref="smile"/>
-    </logger>
+    <!--    <logger name="org.springframework.boot" level="debug"
+                additivity="false">
+            <appender-ref ref="springboot"/>
+        </logger>
+        <logger name="druid.sql.Statement" level="debug" additivity="false">
+            <appender-ref ref="smile"/>
+        </logger>-->
+
+    <!--这些日志太多了我就不打印，关闭日志的坏处就是看不到该日志的错误了-->
+    <logger name="org.springframework.jndi" level="OFF"/>
+    <logger name="springfox.documentation" level="OFF"/>
+
     <!-- name包必须能够扫描到所以类，包括启动类 -->
     <root level="debug">
-        <appender-ref ref="stdout"/>
+        <appender-ref ref="console"/>
+        <appender-ref ref="springboot"/>
     </root>
 </configuration>

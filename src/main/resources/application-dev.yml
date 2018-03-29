@@ -6,3 +6,5 @@ server:
 #  swagger开关
 demo:
   swagger-open: true
+
+
