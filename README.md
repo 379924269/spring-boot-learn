@@ -1,11 +1,12 @@
+#springboot-learn
 ## 1、实现功能：
 * 表基本的curd操作、swaggerUI文档、shiro安全认证、alibaba数据库的监、集成测试
 
-## 3、环境
+## 2、环境
 * 系统环境：windows
 * 工具：idea2017.15 + maven3.0.5 + jdk1.7 + tomcat8 + mysql5.1.28
 
-## 2、结构
+## 3、结构
 * 该项目由 springboot + swaggerUI + mybaits-plus + shiro
     * 用springboot基本上不用写配置，大大的简化了项目配置，让我们更专注业务，抛弃了传统的spring.xml配置
 * 后端
