@@ -58,6 +58,7 @@
     <!--这些日志太多了我就不打印，关闭日志的坏处就是看不到该日志的错误了-->
     <logger name="org.springframework.jndi" level="OFF"/>
     <logger name="springfox.documentation" level="OFF"/>
+    <logger name="org.springframework" level="INFO"/>
 
     <!-- name包必须能够扫描到所以类，包括启动类 -->
     <root level="debug">

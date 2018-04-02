@@ -37,7 +37,7 @@ public class UserController {
     @ApiOperation(value = "查询所有用户信息" , notes = "查询所有用户信息" )
     public Object findAll(PageVo pageVo,
                           @ApiParam(name = "search" , value = "模糊查询字段" , required = false) @RequestParam(required = false, defaultValue = "" ) String search) {
-        return null;
+        return userService.selectById(1);
     }
 
 
