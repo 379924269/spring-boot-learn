@@ -1,7 +1,6 @@
 package com.dnp.bootstarp.controller;
 
 import com.dnp.bootstarp.common.constant.LoginMsg;
-import com.dnp.bootstarp.common.util.MD5Util;
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
 import io.swagger.annotations.Api;

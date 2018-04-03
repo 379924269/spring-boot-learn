@@ -1,6 +1,7 @@
 # springboot-learn
+
 ## 1、实现功能：
-* 表基本的curd操作、swaggerUI文档、shiro安全认证、alibaba数据库的监、集成测试
+* 表基本的curd操作、swaggerUI文档、shiro安全认证、alibaba数据库的监、集成测试、简单的自动生成代码
 
 ## 2、环境
 * 系统环境：windows
@@ -35,7 +36,13 @@
     
 * 测试配置参考地址：http://ningg.top/tool-personal-intellij-idea-debug-for-mvn-test/
 
-## 5、一些注意事项
+## 5、shiro的一些注意事项
+* 参考文档地址[张开涛]：http://jinnianshilongnian.iteye.com/blog/2018936
+    * 配置权限有两种方法：
+        * 注解（当前使用的），如果要用restfull请求，最好用注解，才好区分开不通的方法。手动加载暂时还不知道怎么弄
+        * 数据库直接配置，手动加载
+
+## 一些注意事项
 * springboot项目最低支持jdk1.7、tomcat8 
 
 * lockback.xml 日志生成在哪里(windows,unix没测)，生成路径如下：

@@ -1,13 +1,16 @@
 package com.dnp.bootstarp;
 
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.util.Random;
 
 
 /**
@@ -21,11 +24,21 @@ public class UsersTest extends BootstartlearnApplicationTests {
 
     @Test
     public void findAll() throws Exception {
-        logger.debug("=========================================================================================================");
-        MockHttpServletRequestBuilder xx = MockMvcRequestBuilders.get("/user");
-        ResultActions mm = mockMvc.perform(xx);
+        mockMvc.perform(MockMvcRequestBuilders.get("/user")).
+                andExpect(MockMvcResultMatchers.status().is(200))
+                .andDo(MockMvcResultHandlers.print());
+    }
 
-                mm.andExpect(MockMvcResultMatchers.status().is(404));
+    @Test
+    public void add() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/user")
+                .param("name", "lala" + new Random().nextInt())
+                .param("email", "lala@qq.com" + new Random().nextInt())
+                .param("password", "123456")
+                .param("createdDate", String.valueOf(System.currentTimeMillis()))
+                .param("roleId", "1"))
+                .andExpect(MockMvcResultMatchers.status().is(200)) //判断接收的状态是否是200
+                .andDo(MockMvcResultHandlers.print());   //打印内容
     }
 
 }

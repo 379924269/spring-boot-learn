@@ -35,6 +35,7 @@ public class ApplicationController {
 
     @RequestMapping(value = "" , method = RequestMethod.GET)
     @ApiOperation(value = "查询所有应用信息" , notes = "查询所有应用信息" )
+    @RequiresPermissions(value = "device.APK.list")
     public Object findAll(PageVo pageVo,
                           @ApiParam(name = "search" , value = "模糊查询字段" , required = false) @RequestParam(required = false, defaultValue = "" ) String search) {
         Page page = new Page(pageVo.getOffset(), pageVo.getLimit());
