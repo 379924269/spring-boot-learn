@@ -1,6 +1,7 @@
 package com.dnp.bootstarp.controller;
 
 import com.dnp.bootstarp.common.constant.LoginMsg;
+import com.dnp.bootstarp.common.shiro.MyRealm;
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
 import io.swagger.annotations.Api;
@@ -8,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
+import org.apache.shiro.mgt.RealmSecurityManager;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,7 +83,8 @@ public class LoginController {
     @ApiOperation(value = "用户登陆", notes = "用户登陆")
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String loginVali(@ApiParam(name = "username", value = "用户email", defaultValue = "huazai@qq.com") @RequestParam(required = false, name = "username") String username,
-                            @ApiParam(name = "password", value = "用户密码", defaultValue = "e10adc3949ba59abbe56e057f20f883e") @RequestParam(required = false, name = "password") String password) {
+                            @ApiParam(name = "password", value = "用户密码", defaultValue = "e10adc3949ba59abbe56e057f20f883e") @RequestParam(required = false, name = "password")
+                                    String password) {
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
 //        token.setRememberMe(true);
         try {
@@ -122,6 +125,29 @@ public class LoginController {
     public String logOut() {
         SecurityUtils.getSubject().logout();
         return new JSONObject().put("msg", "跳转到主页logOut").toString();
+    }
+
+    /**
+     * 退出登录
+     */
+    @ApiOperation(value = "用户同时登陆被挤下线了", notes = "用户同时登陆被挤下线了")
+    @RequestMapping(value = "/kickoutUrl", method = RequestMethod.GET)
+    public String kickoutUrl() {
+        SecurityUtils.getSubject().logout();
+        return new JSONObject().put("msg", "用户同时登陆被挤下线了").toString();
+    }
+
+
+    /**
+     * 清除权限
+     */
+    @ApiOperation(value = "清除权限", notes = "清除权限")
+    @RequestMapping(value = "/cleanPermissionCache", method = RequestMethod.GET)
+    public String cleanPermissionCache() {
+        RealmSecurityManager rsm = (RealmSecurityManager) SecurityUtils.getSecurityManager();
+        MyRealm myRealm = (MyRealm) rsm.getRealms().iterator().next();
+        myRealm.clearAllCachedAuthorizationInfo();
+        return new JSONObject().put("msg", "OK").toString();
     }
 
     /**

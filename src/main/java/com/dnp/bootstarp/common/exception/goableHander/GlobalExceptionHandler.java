@@ -1,27 +1,16 @@
 package com.dnp.bootstarp.common.exception.goableHander;
 
 import com.dnp.bootstarp.common.constant.tips.ErrorTip;
-import com.dnp.bootstarp.common.exception.BizExceptionEnum;
-import com.dnp.bootstarp.common.exception.BussinessException;
-import com.dnp.bootstarp.common.exception.InvalidKaptchaException;
 import com.dnp.bootstarp.common.support.HttpKit;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.CredentialsException;
-import org.apache.shiro.authc.DisabledAccountException;
-import org.apache.shiro.session.InvalidSessionException;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.session.UnknownSessionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.lang.reflect.UndeclaredThrowableException;
 
 /**
  * 全局的的异常拦截器（拦截所有的控制器）（带有@RequestMapping注解的方法上都会拦截）
@@ -46,6 +35,21 @@ public class GlobalExceptionHandler {
         HttpKit.getRequest().setAttribute("tip", e.getMessage());
         log.error("业务异常:", e);
         return new ErrorTip(500, e.getMessage());
+    }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorTip unauthorizedException(Exception e) {
+        HttpKit.getRequest().setAttribute("tip", e.getMessage());
+        return new ErrorTip(500, "没有权限");
+    }
+
+    @ExceptionHandler(UnknownSessionException.class)
+    @ResponseStatus(HttpStatus.OK)
+    public ErrorTip unknownSessionException(Exception e) {
+        HttpKit.getRequest().setAttribute("tip", e.getMessage());
+        log.error("=====会话已经过期=====");
+        return new ErrorTip(500, "会话已经过期");
     }
 
 //    /**
