@@ -42,17 +42,6 @@ public class ShiroConfig {
         return retyCre;
     }
 
-    @Bean
-    public KickoutSessionControlFilter KickoutSessionControlFilter(SessionManager securityManager, CacheManager cacheManager) {
-        KickoutSessionControlFilter kickout = new KickoutSessionControlFilter();
-        kickout.setCacheManager(cacheManager);
-        kickout.setSessionManager(securityManager);
-        kickout.setKickoutAfter(false);
-        kickout.setMaxSession(1);
-        kickout.setKickoutUrl("/login/kicoutUrl");
-        return kickout;
-    }
-
     /*=======自己的realm，用来设置权限的验证用户======*/
     @Bean(name = "myRealm")
     public MyRealm myRealm(RetryLimitHashedCredentialsMatcher retryLimitHashedCredentialsMatcher) {
@@ -212,6 +201,17 @@ public class ShiroConfig {
         AuthorizationAttributeSourceAdvisor advisor = new AuthorizationAttributeSourceAdvisor();
         advisor.setSecurityManager(securityManager);
         return advisor;
+    }
+
+    @Bean
+    public KickoutSessionControlFilter KickoutSessionControlFilter(SessionManager securityManager, CacheManager cacheManager) {
+        KickoutSessionControlFilter kickout = new KickoutSessionControlFilter();
+        kickout.setCacheManager(cacheManager);
+        kickout.setSessionManager(securityManager);
+        kickout.setKickoutAfter(false);
+        kickout.setMaxSession(1);
+        kickout.setKickoutUrl("/login/kicoutUrl");
+        return kickout;
     }
 
     /**
