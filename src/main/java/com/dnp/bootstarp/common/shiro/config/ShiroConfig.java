@@ -7,6 +7,7 @@ import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.DefaultSecurityManager;
+import org.apache.shiro.session.mgt.ExecutorServiceSessionValidationScheduler;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
 import org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator;
@@ -22,7 +23,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.Filter;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -60,28 +60,15 @@ public class ShiroConfig {
     }
 
     @Bean(name = "securityManager")
-    public DefaultSecurityManager securityManager(EhCacheManager ehCacheManager, MyRealm myRealm, CookieRememberMeManager cookieRememberMeManager, SessionManager sessionManager) {
+    public DefaultSecurityManager securityManager(EhCacheManager ehCacheManager, MyRealm myRealm, CookieRememberMeManager cookieRememberMeManager) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(myRealm);
-        securityManager.setSessionManager(sessionManager);
+        securityManager.setSessionManager(sessionManager());
         securityManager.setCacheManager(ehCacheManager);
         securityManager.setRememberMeManager(cookieRememberMeManager);
         return securityManager;
     }
 
-
-        /*用户重复登录问题*/
-
-//    @Bean("getKickoutSessionControlFilter")
-//    public KickoutSessionControlFilter getKickoutSessionControlFilter() {
-//        KickoutSessionControlFilter kickoutSessionControlFilter = new KickoutSessionControlFilter();
-//        kickoutSessionControlFilter.setCacheManager(getEhCacheManager());
-//        kickoutSessionControlFilter.setSessionManager(sessionManager());
-//        kickoutSessionControlFilter.setKickoutAfter(Boolean.FALSE);
-//        kickoutSessionControlFilter.setMaxSession(1);
-//        kickoutSessionControlFilter.setKickoutUrl("/login/login");
-//        return kickoutSessionControlFilter;
-//    }
 
     /**
      * 没有登陆会自动跳转到setLoginUrl
@@ -94,7 +81,7 @@ public class ShiroConfig {
         ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
         shiroFilter.setLoginUrl("/login/login");
         shiroFilter.setSuccessUrl("/login/index");
-        shiroFilter.setUnauthorizedUrl("/login/login");
+        shiroFilter.setUnauthorizedUrl("/login/noPermission");
         Map<String, Filter> map = new LinkedHashMap<>();
         map.put("kickout", kickoutSessionControlFilter);
         Map<String, String> filterMap = getShiroFliterMap();
@@ -110,14 +97,22 @@ public class ShiroConfig {
      * @return
      */
     @Bean(name = "sessionManager")
-    public SessionManager sessionManager() {
+    public DefaultWebSessionManager sessionManager() {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         sessionManager.setSessionDAO(sessionDAO());
-        sessionManager.setSessionIdCookie(simpleCookie());
+        sessionManager.setSessionIdCookie(simpleIdCookie());
+        sessionManager.setSessionIdCookieEnabled(true);
+        sessionManager.setSessionIdUrlRewritingEnabled(true);
+        sessionManager.setSessionValidationScheduler(executorServiceSessionValidationScheduler());
+        sessionManager.setDeleteInvalidSessions(true);
         //设置session过期时间为1小时(单位：毫秒)，默认为30分钟
         return sessionManager;
     }
 
+    /**
+     * 会话存储/持久化,Shiro提供SessionDAO用于会话的CRUD
+     * @return
+     */
     @Bean
     public EnterpriseCacheSessionDAO sessionDAO() {
         // Ehcache缓存
@@ -134,11 +129,25 @@ public class ShiroConfig {
     }
 
     @Bean
-    public SimpleCookie simpleCookie() {
+    public SimpleCookie simpleIdCookie() {
         //System.out.println("ShiroConfiguration.rememberMeCookie()");
         //这个参数是cookie的名称，对应前端的checkbox的name = rememberMe
-        SimpleCookie simpleCookie = new SimpleCookie("huazai.session.id");
-        return simpleCookie;
+        SimpleCookie simpleIdCookie = new SimpleCookie();
+        simpleIdCookie.setName("sid");
+        //单位秒
+        simpleIdCookie.setMaxAge(60*60*24*30);
+        simpleIdCookie.setHttpOnly(true);
+
+        return simpleIdCookie;
+    }
+
+    @Bean
+    public ExecutorServiceSessionValidationScheduler executorServiceSessionValidationScheduler() {
+        // Ehcache缓存
+        ExecutorServiceSessionValidationScheduler executorServiceSessionValidationScheduler = new ExecutorServiceSessionValidationScheduler();
+        //毫秒
+        executorServiceSessionValidationScheduler.setInterval(1000*60*60);
+        return executorServiceSessionValidationScheduler;
     }
 
     @Bean
@@ -204,13 +213,13 @@ public class ShiroConfig {
     }
 
     @Bean
-    public KickoutSessionControlFilter KickoutSessionControlFilter(SessionManager securityManager, CacheManager cacheManager) {
+    public KickoutSessionControlFilter KickoutSessionControlFilter(SessionManager sessionManager, CacheManager cacheManager) {
         KickoutSessionControlFilter kickout = new KickoutSessionControlFilter();
         kickout.setCacheManager(cacheManager);
-        kickout.setSessionManager(securityManager);
+        kickout.setSessionManager(sessionManager);
         kickout.setKickoutAfter(false);
         kickout.setMaxSession(1);
-        kickout.setKickoutUrl("/login/kicoutUrl");
+        kickout.setKickoutUrl("/login/kickoutUrl");
         return kickout;
     }
 
@@ -229,8 +238,9 @@ public class ShiroConfig {
         filterMap.put("/sys/login", "anon");
         filterMap.put("/captcha.jpg", "anon");
         filterMap.put("/login", "anon");
-        filterMap.put("/login/login", "anon");
+        filterMap.put("/login/**", "anon");
         filterMap.put("/login/index", "anon");
+        filterMap.put("/login/kickoutUrl", "anon");
         //下面是过滤swagger的
         filterMap.put("/v2/api-docs", "anon");
         filterMap.put("/swagger-ui.html", "anon");

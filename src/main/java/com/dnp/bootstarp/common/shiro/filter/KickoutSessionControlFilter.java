@@ -1,5 +1,6 @@
 package com.dnp.bootstarp.common.shiro.filter;
 
+import com.dnp.bootstarp.model.User;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.session.Session;
@@ -65,15 +66,13 @@ public class KickoutSessionControlFilter extends AccessControlFilter {
 
 	@Override
 	protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
-		logger.info("控制一个用户只能登录一次，再次登录就踢出上一个登录的用户");
-		
 		Subject subject = getSubject(request, response);
 		if (!subject.isAuthenticated() && !subject.isRemembered()) {
 			// 如果没有登录，直接进行之后的流程
 			return true;
 		}
 		Session session = subject.getSession();
-		String email = (String) subject.getPrincipal();
+		String email  = ((User) subject.getPrincipal()).getEmail();
 		Serializable sessionId = session.getId();
 
 		// TODO 同步控制
@@ -103,6 +102,7 @@ public class KickoutSessionControlFilter extends AccessControlFilter {
 					kickoutSession.setAttribute("kickout", true);
 				}
 			} catch (Exception e) {// ignore exception
+				e.printStackTrace();
 			}
 		}
 
