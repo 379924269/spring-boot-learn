@@ -7,6 +7,7 @@ import org.apache.shiro.session.UnknownSessionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -48,8 +49,15 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.OK)
     public ErrorTip unknownSessionException(Exception e) {
         HttpKit.getRequest().setAttribute("tip", e.getMessage());
-        log.error("=====会话已经过期=====");
         return new ErrorTip(500, "会话已经过期");
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    @ResponseStatus(HttpStatus.OK)
+    public ErrorTip httpRequestMethodNotSupportedException(Exception e) {
+        //TODO 这个异常是在请求没有权限的方法的时候报的（方法存在），如果有权限不会报错，暂时不知道怎么处理就直接异常处理了。要看看怎么处理
+        HttpKit.getRequest().setAttribute("tip", e.getMessage());
+        return new ErrorTip(500, "没有权限");
     }
 
 //    /**

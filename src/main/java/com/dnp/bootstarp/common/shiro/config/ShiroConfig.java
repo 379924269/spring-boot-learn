@@ -1,9 +1,12 @@
 package com.dnp.bootstarp.common.shiro.config;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.dnp.bootstarp.common.shiro.MyRealm;
 import com.dnp.bootstarp.common.shiro.filter.KickoutSessionControlFilter;
 import com.dnp.bootstarp.common.shiro.filter.RetryLimitHashedCredentialsMatcher;
+import com.dnp.bootstarp.model.Resource;
 import com.dnp.bootstarp.service.ResourceService;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.codec.Base64;
@@ -27,6 +30,7 @@ import org.springframework.context.annotation.Configuration;
 import javax.annotation.PostConstruct;
 import javax.servlet.Filter;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -80,14 +84,14 @@ public class ShiroConfig {
      * @return
      */
     @Bean("shiroFilter")
-    public ShiroFilterFactoryBean shirFilter(ResourceService resourceService,DefaultSecurityManager securityManager, KickoutSessionControlFilter kickoutSessionControlFilter) {
+    public ShiroFilterFactoryBean shirFilter(ResourceService resourceService, DefaultSecurityManager securityManager, KickoutSessionControlFilter kickoutSessionControlFilter) {
         ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
         shiroFilter.setLoginUrl("/login/login");
         shiroFilter.setSuccessUrl("/login/index");
         shiroFilter.setUnauthorizedUrl("/login/noPermission");
         Map<String, Filter> map = new LinkedHashMap<>();
         map.put("kickout", kickoutSessionControlFilter);
-        Map<String, String> filterMap = getShiroFliterMap();
+        Map<String, String> filterMap = getShiroFliterMap(resourceService);
 
         shiroFilter.setFilters(map);
         shiroFilter.setFilterChainDefinitionMap(filterMap);
@@ -232,8 +236,16 @@ public class ShiroConfig {
      *
      * @return map
      */
-    private Map<String, String> getShiroFliterMap() {
+    private Map<String, String> getShiroFliterMap(ResourceService resourceService) {
+        //加载数据库的动态权限
+        List<Resource> resourceList = resourceService.selectList(new EntityWrapper<Resource>());
         Map<String, String> filterMap = new LinkedHashMap<>();
+        for (Resource resource : resourceList) {
+            if (StringUtils.isNotEmpty(resource.getResKey())) {
+                filterMap.put(resource.getResUrl(), "rest[" + resource.getResKey().substring(0, resource.getResKey().indexOf(":")) + "]");
+            }
+        }
+
         filterMap.put("/public/**", "anon");
         filterMap.put("/webjars/**", "anon");
         filterMap.put("/api/**", "anon");
@@ -250,7 +262,7 @@ public class ShiroConfig {
         filterMap.put("/swagger-ui.html", "anon");
         filterMap.put("/swagger-resources/**", "anon");
         filterMap.put("/favicon.ico", "anon");
-        filterMap.put("/application", "rest[application]");
+        //filterMap.put("/application", "rest[application]");
 
 
 //        filterMap.put("/demo/v2/api-docs", "anon");

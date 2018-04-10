@@ -6,6 +6,7 @@ import com.dnp.bootstarp.dao.ResourceMapper;
 import com.dnp.bootstarp.dao.UserMapper;
 import com.dnp.bootstarp.model.Resource;
 import com.dnp.bootstarp.model.User;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -27,8 +28,6 @@ public class MyRealm extends AuthorizingRealm {
 
     Logger logger = LoggerFactory.getLogger(MyRealm.class);
 
-    private static EhCacheManager cacheManager;
-
     @Autowired
     private ResourceMapper resourceMapper;
 
@@ -44,7 +43,9 @@ public class MyRealm extends AuthorizingRealm {
 
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         for (Resource resource : res) {
-            info.addStringPermission(resource.getResKey());
+            if (StringUtils.isNotEmpty(resource.getResKey())) {
+                info.addStringPermission(resource.getResKey());
+            }
 
         }
         return info;
