@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
  * @author stylefeng
  * @since 2017-08-09
  */
-@Service
+@Service("resourceService")
 public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> implements ResourceService {
 
 }

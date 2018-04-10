@@ -3,6 +3,7 @@ package com.dnp.bootstarp.common.shiro.config;
 import com.dnp.bootstarp.common.shiro.MyRealm;
 import com.dnp.bootstarp.common.shiro.filter.KickoutSessionControlFilter;
 import com.dnp.bootstarp.common.shiro.filter.RetryLimitHashedCredentialsMatcher;
+import com.dnp.bootstarp.service.ResourceService;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.codec.Base64;
@@ -19,9 +20,11 @@ import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.Filter;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -29,7 +32,8 @@ import java.util.Map;
 /**
  * Created by huazai on 2017/8/15.
  */
-@Component
+//@Component
+@Configuration
 public class ShiroConfig {
 
     /*写一个密码次数验证*/
@@ -69,7 +73,6 @@ public class ShiroConfig {
         return securityManager;
     }
 
-
     /**
      * 没有登陆会自动跳转到setLoginUrl
      *
@@ -77,7 +80,7 @@ public class ShiroConfig {
      * @return
      */
     @Bean("shiroFilter")
-    public ShiroFilterFactoryBean shirFilter(DefaultSecurityManager securityManager, KickoutSessionControlFilter kickoutSessionControlFilter) {
+    public ShiroFilterFactoryBean shirFilter(ResourceService resourceService,DefaultSecurityManager securityManager, KickoutSessionControlFilter kickoutSessionControlFilter) {
         ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
         shiroFilter.setLoginUrl("/login/login");
         shiroFilter.setSuccessUrl("/login/index");
@@ -111,6 +114,7 @@ public class ShiroConfig {
 
     /**
      * 会话存储/持久化,Shiro提供SessionDAO用于会话的CRUD
+     *
      * @return
      */
     @Bean
@@ -135,7 +139,7 @@ public class ShiroConfig {
         SimpleCookie simpleIdCookie = new SimpleCookie();
         simpleIdCookie.setName("sid");
         //单位秒
-        simpleIdCookie.setMaxAge(60*60*24*30);
+        simpleIdCookie.setMaxAge(60 * 60 * 24 * 30);
         simpleIdCookie.setHttpOnly(true);
 
         return simpleIdCookie;
@@ -146,7 +150,7 @@ public class ShiroConfig {
         // Ehcache缓存
         ExecutorServiceSessionValidationScheduler executorServiceSessionValidationScheduler = new ExecutorServiceSessionValidationScheduler();
         //毫秒
-        executorServiceSessionValidationScheduler.setInterval(1000*60*60);
+        executorServiceSessionValidationScheduler.setInterval(1000 * 60 * 60);
         return executorServiceSessionValidationScheduler;
     }
 
@@ -246,6 +250,7 @@ public class ShiroConfig {
         filterMap.put("/swagger-ui.html", "anon");
         filterMap.put("/swagger-resources/**", "anon");
         filterMap.put("/favicon.ico", "anon");
+        filterMap.put("/application", "rest[application]");
 
 
 //        filterMap.put("/demo/v2/api-docs", "anon");
@@ -253,5 +258,10 @@ public class ShiroConfig {
 //        filterMap.put("/demo/swagger-resources/**", "anon");
         filterMap.put("/**", "authc, kickout");
         return filterMap;
+    }
+
+    @PostConstruct
+    public void postConstruct() {
+        System.out.println("=========PostConstruct=============");
     }
 }
