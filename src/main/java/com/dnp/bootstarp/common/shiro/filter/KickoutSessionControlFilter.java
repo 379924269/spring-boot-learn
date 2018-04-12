@@ -75,7 +75,6 @@ public class KickoutSessionControlFilter extends AccessControlFilter {
 		String email  = ((User) subject.getPrincipal()).getEmail();
 		Serializable sessionId = session.getId();
 
-		// TODO 同步控制
 		Deque<Serializable> deque = cache.get(email);
 		if (deque == null) {
 			deque = new LinkedList<Serializable>();

@@ -24,7 +24,6 @@ public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher
     @Override
     public boolean doCredentialsMatch(AuthenticationToken token,
         AuthenticationInfo info) {
-    	logger.info("========RetryLimitHashedCredentialsMatcher：密码错误重复次数验证========");
         String username = (String) token.getPrincipal();
 
         // retry count + 1
@@ -39,8 +38,6 @@ public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher
             // if retry count > 5 throw
             throw new ExcessiveAttemptsException();
         }
-
-        logger.info("=========密码验证错误次数: " + retryCount + "===========");
 
         boolean matches = super.doCredentialsMatch(token, info);
 

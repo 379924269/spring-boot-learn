@@ -63,7 +63,7 @@ public ${entity} findById(@ApiParam(name = "id" , value = "${table.comment}id" ,
 
 @RequestMapping(value = "/{id}" , method = RequestMethod.PUT)
 @ApiOperation(value = "修改${table.comment}" , notes = "修改${table.comment}")
-public void update(${entity} ${table.entityPath}){
+public void updateById(${entity} ${table.entityPath}){
     ${table.entityPath}Service.updateAllColumnById(${table.entityPath});
         }
 
@@ -98,7 +98,7 @@ ${table.entityPath}Service.insertAllColumn(${table.entityPath});
 
 @RequestMapping(value = "/{id}" , method = RequestMethod.DELETE)
 @ApiOperation(value = "删除${table.comment}" , notes = "修改${table.comment}")
-public void delete(@ApiParam(name = "id" , value = "${table.comment}id" , required = true) @PathVariable("id") Integer id){
+public void deleteById(@ApiParam(name = "id" , value = "${table.comment}id" , required = true) @PathVariable("id") Integer id){
     ${table.entityPath}Service.deleteById(id);
         }
 

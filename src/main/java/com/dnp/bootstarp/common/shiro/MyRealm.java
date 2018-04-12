@@ -37,7 +37,6 @@ public class MyRealm extends AuthorizingRealm {
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        logger.info("========授权=========");
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         List<Resource> res = resourceMapper.selectByRoleId(user.getRoleId());
 
@@ -60,7 +59,6 @@ public class MyRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        logger.info("========验证用户=========");
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
         User user = userMapper.selectByName(token.getUsername());
         if (!StrKit.isEmpty(user.getEmail())) {
