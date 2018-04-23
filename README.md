@@ -36,7 +36,13 @@
     
 * 测试配置参考地址：http://ningg.top/tool-personal-intellij-idea-debug-for-mvn-test/
 
-## 5、shiro的一些注意事项
+## 5、日志lockback
+* lockback.xml 日志生成位置(windows,unix没测)，生成路径如下：
+    * 如果log.dir = ../logs/项目名称/logs/日志名称，会生成到tomcat下面的logs里面
+    * 如果log.dir = logs/日志名称,会生成到tomcat/bin下面
+    * 如果log.dir=/log/日志名称,会生成到项目跟目录下面
+
+## 6、shiro的一些注意事项
 * 参考文档地址[张开涛]：http://jinnianshilongnian.iteye.com/blog/2018936
     * 配置权限有3种方法：
         * 注解
@@ -46,10 +52,9 @@
 ## 一些注意事项
 * springboot项目最低支持jdk1.7、tomcat8 
 
-* lockback.xml 日志生成在哪里(windows,unix没测)，生成路径如下：
-    * 如果log.dir = ../logs/项目名称/logs/日志名称，会生成到tomcat下面的logs里面
-    * 如果log.dir = logs/日志名称,会生成到tomcat/bin下面
-    * 如果log.dir=/log/日志名称,会生成到项目跟目录下面
-
 * 在springboot项目部署到tomcat下的时候遇到的问题：
     * springboot要求tomcat版本为8.0即以上，其他的解决思路参考：http://www.jb51.net/article/123206.htm
+
+
+## 学习文档：
+* https://github.com/dyc87112/SpringBoot-Learning

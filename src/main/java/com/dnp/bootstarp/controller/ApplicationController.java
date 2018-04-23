@@ -5,6 +5,7 @@ package
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.dnp.bootstarp.common.page.PageVo;
+import com.dnp.bootstarp.common.util.LoggerUtil;
 import com.dnp.bootstarp.model.Application;
 import com.dnp.bootstarp.service.ApplicationService;
 import com.github.pagehelper.PageHelper;
@@ -14,7 +15,10 @@ import io.swagger.annotations.ApiParam;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +41,7 @@ public class ApplicationController {
     @ApiOperation(value = "查询所有应用信息" , notes = "查询所有应用信息" )
     public Object findAll(PageVo pageVo,
                           @ApiParam(name = "search" , value = "模糊查询字段" , required = false) @RequestParam(required = false, defaultValue = "" ) String search) {
+        LoggerUtil.info(this.getClass(),"========application============");
         Page page = new Page(pageVo.getOffset(), pageVo.getLimit());
         return applicationService.selectMapsPage(page, new EntityWrapper<Application>());
     }

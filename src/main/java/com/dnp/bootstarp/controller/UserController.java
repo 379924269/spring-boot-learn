@@ -73,9 +73,7 @@ public class UserController {
             @ApiParam(name = "roleId" , value = "角色id" )
             @RequestParam(required = false, name = "roleId" ) Integer roleId
     ) {
-        User user = new User(
-
-                name, email, password, createdDate, roleId);
+        User user = new User(name, email, password, createdDate, roleId);
         userService.insertAllColumn(user);
     }
 

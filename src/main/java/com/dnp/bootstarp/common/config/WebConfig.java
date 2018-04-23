@@ -3,6 +3,7 @@ package com.dnp.bootstarp.common.config;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
+import com.dnp.bootstarp.common.interceptor.MyInteceptor;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.google.code.kaptcha.util.Config;
 import org.slf4j.Logger;
@@ -12,6 +13,8 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
@@ -24,7 +27,7 @@ import java.util.Properties;
  * @Date 2017/8/10
  */
 @Configuration
-public class WebConfig {
+public class WebConfig extends WebMvcConfigurerAdapter {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -98,4 +101,9 @@ public class WebConfig {
         return defaultKaptcha;
     }
 
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new MyInteceptor()).addPathPatterns("/**");
+        super.addInterceptors(registry);
+    }
 }

@@ -67,7 +67,7 @@ public class LoginController {
      * 跳转到登录页面
      */
     @ApiOperation(value = "跳转到登陆页面", notes = "跳转到登陆页面", hidden = true)
-    @RequestMapping(value = "/login", method = {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE, RequestMethod.PUT, RequestMethod.OPTIONS})
+    @RequestMapping(value = "/login", method = {RequestMethod.GET, RequestMethod.DELETE, RequestMethod.PUT, RequestMethod.OPTIONS})
     public String login() {
 //        if (ShiroKit.isAuthenticated() || ShiroKit.getUser() != null) {
 //            return REDIRECT + "/";

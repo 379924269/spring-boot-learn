@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.dnp.bootstarp.common.shiro.MyRealm;
 import com.dnp.bootstarp.common.shiro.filter.KickoutSessionControlFilter;
 import com.dnp.bootstarp.common.shiro.filter.RetryLimitHashedCredentialsMatcher;
+import com.dnp.bootstarp.common.util.LoggerToggleProperties;
+import com.dnp.bootstarp.common.util.LoggerUtil;
 import com.dnp.bootstarp.model.Resource;
 import com.dnp.bootstarp.service.ResourceService;
 import org.apache.commons.lang3.StringUtils;
@@ -84,7 +86,11 @@ public class ShiroConfig {
      * @return
      */
     @Bean("shiroFilter")
-    public ShiroFilterFactoryBean shirFilter(ResourceService resourceService, DefaultSecurityManager securityManager, KickoutSessionControlFilter kickoutSessionControlFilter) {
+    public ShiroFilterFactoryBean shirFilter(ResourceService resourceService, DefaultSecurityManager securityManager,
+                                             KickoutSessionControlFilter
+            kickoutSessionControlFilter) {
+        LoggerUtil.info(this.getClass(), "======初始化shiroFilterBean======");
+
         ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
         shiroFilter.setLoginUrl("/login/login");
         shiroFilter.setSuccessUrl("/login/index");
@@ -92,7 +98,6 @@ public class ShiroConfig {
         Map<String, Filter> map = new LinkedHashMap<>();
         map.put("kickout", kickoutSessionControlFilter);
         Map<String, String> filterMap = getShiroFliterMap(resourceService);
-
         shiroFilter.setFilters(map);
         shiroFilter.setFilterChainDefinitionMap(filterMap);
         shiroFilter.setSecurityManager(securityManager);
@@ -109,7 +114,7 @@ public class ShiroConfig {
         sessionManager.setSessionDAO(sessionDAO());
         sessionManager.setSessionIdCookie(simpleIdCookie());
         sessionManager.setSessionIdCookieEnabled(true);
-        sessionManager.setSessionIdUrlRewritingEnabled(true);
+        sessionManager.setSessionIdUrlRewritingEnabled(false);
         sessionManager.setSessionValidationScheduler(executorServiceSessionValidationScheduler());
         sessionManager.setDeleteInvalidSessions(true);
         //设置session过期时间为1小时(单位：毫秒)，默认为30分钟
@@ -142,6 +147,7 @@ public class ShiroConfig {
         //这个参数是cookie的名称，对应前端的checkbox的name = rememberMe
         SimpleCookie simpleIdCookie = new SimpleCookie();
         simpleIdCookie.setName("sid");
+        simpleIdCookie.setPath("/");
         //单位秒
         simpleIdCookie.setMaxAge(60 * 60 * 24 * 30);
         simpleIdCookie.setHttpOnly(true);
@@ -262,12 +268,6 @@ public class ShiroConfig {
         filterMap.put("/swagger-ui.html", "anon");
         filterMap.put("/swagger-resources/**", "anon");
         filterMap.put("/favicon.ico", "anon");
-        //filterMap.put("/application", "rest[application]");
-
-
-//        filterMap.put("/demo/v2/api-docs", "anon");
-//        filterMap.put("/demo/swagger-ui.html", "anon");
-//        filterMap.put("/demo/swagger-resources/**", "anon");
         filterMap.put("/**", "authc, kickout");
         return filterMap;
     }

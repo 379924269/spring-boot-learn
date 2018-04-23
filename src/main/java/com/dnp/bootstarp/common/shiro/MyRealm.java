@@ -26,8 +26,6 @@ import java.util.List;
  */
 public class MyRealm extends AuthorizingRealm {
 
-    Logger logger = LoggerFactory.getLogger(MyRealm.class);
-
     @Autowired
     private ResourceMapper resourceMapper;
 

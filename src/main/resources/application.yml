@@ -25,3 +25,6 @@ mybatis-plus:
     cache-enabled: true #配置的缓存的全局开关
     lazyLoadingEnabled: true #延时加载的开关
     multipleResultSetsEnabled: true
+
+huazai:
+  logger: true

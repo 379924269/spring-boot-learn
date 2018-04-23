@@ -1,7 +1,8 @@
 server:
-  port: 300
+  port: 80
   context-path: /demo300/
 
-#  swagger开关
+#  swagger开关, logger调试日志开关
 demo:
-  swagger-open: false
+  swagger-open: true
+  logger-open: true
