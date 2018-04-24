@@ -63,5 +63,5 @@
     * springboot要求tomcat版本为8.0即以上，其他的解决思路参考：http://www.jb51.net/article/123206.htm
 
 
-## 学习文档：
+## springboot学习文档：
 * https://github.com/dyc87112/SpringBoot-Learning

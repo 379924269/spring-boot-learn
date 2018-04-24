@@ -1,5 +1,6 @@
 package com.dnp.bootstarp.common.interceptor;
 
+import com.dnp.bootstarp.common.operateLog.OperateLogUtil;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -23,8 +24,9 @@ public class MyInteceptor implements HandlerInterceptor {
 
     }
 
+    //拦截器处理日志，参考地址（https://blog.csdn.net/u011521890/article/details/74990338）
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        System.out.println("==========");
+        OperateLogUtil.logHandler(request, response, handler, ex);
     }
 }
