@@ -36,18 +36,25 @@
     
 * 测试配置参考地址：http://ningg.top/tool-personal-intellij-idea-debug-for-mvn-test/
 
-## 5、日志lockback
+## 5、日志lockback：
 * lockback.xml 日志生成位置(windows,unix没测)，生成路径如下：
     * 如果log.dir = ../logs/项目名称/logs/日志名称，会生成到tomcat下面的logs里面
     * 如果log.dir = logs/日志名称,会生成到tomcat/bin下面
     * 如果log.dir=/log/日志名称,会生成到项目跟目录下面
+   
+## 6、SpringBoot-Cache(EhCache):
+* 参考地址（https://blog.csdn.net/tony308001970/article/details/75005231）
+    * 1、在项目启动类中开启缓存
+    * 2、通过缓存注解操作缓存
+        * 我用了shiro，所以存在缓存冲突，我度娘了一下，方法之一就是共享cache，解决方法和简单使用参考地址
+        （http://weiqingfei.iteye.com/blog/2311564）
 
-## 6、shiro的一些注意事项
+## 7、shiro的一些注意事项
 * 参考文档地址[张开涛]：http://jinnianshilongnian.iteye.com/blog/2018936
     * 配置权限有3种方法：
         * 注解
         * 直接在需要配置权限的地方写代码（不推荐）
-        * 动态配置（可以是写到数据库里面，也可以写到配置文件里面）
+        * 动态配置（可以是写到数据库里面，也可以写到配置文件里面）（推荐）
 
 ## 一些注意事项
 * springboot项目最低支持jdk1.7、tomcat8 

@@ -24,6 +24,16 @@
         *                                  共有三种策略,分别为LRU(最近最少使用)、LFU(最常用的)、FIFO(先进先出) -->
 
     <!-- 注意，以下缓存是永久有效，是系统初始化数据到缓存中，如果不需要永久有效，请另写，或在 -->
+    <defaultCache
+            maxElementsInMemory="10000"
+            eternal="false"
+            overflowToDisk="true"
+            timeToIdleSeconds="10"
+            timeToLiveSeconds="120"
+            diskPersistent="false"
+            memoryStoreEvictionPolicy="LRU"
+            diskExpiryThreadIntervalSeconds="120"/>
+
     <cache name="cache"
            maxEntriesLocalHeap="10000"
            maxEntriesLocalDisk="1000"
@@ -90,6 +100,14 @@
            statistics="true">
     </cache>
     <cache name="shiro-kickout-session"
+           maxEntriesLocalHeap="2000"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
+    <cache name="findUserById"
            maxEntriesLocalHeap="2000"
            eternal="false"
            timeToIdleSeconds="3600"

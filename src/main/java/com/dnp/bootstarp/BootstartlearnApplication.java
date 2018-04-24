@@ -1,12 +1,10 @@
 package com.dnp.bootstarp;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.cache.annotation.EnableCaching;
 
 /* 这个是直接运行的*/
 //@SpringBootApplication
@@ -25,6 +23,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 /*这个是打包成war包运行在tomcat下面的*/
 @SpringBootApplication
+@EnableCaching
 public class BootstartlearnApplication extends SpringBootServletInitializer {
 
     @Override

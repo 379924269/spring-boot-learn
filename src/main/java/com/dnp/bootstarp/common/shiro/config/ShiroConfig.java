@@ -26,8 +26,10 @@ import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.Filter;
@@ -168,8 +170,18 @@ public class ShiroConfig {
     public EhCacheManager ehCacheManager() {
         // Ehcache缓存
         EhCacheManager em = new EhCacheManager();
-        em.setCacheManagerConfigFile("classpath:ehcache-shiro.xml");
+        //em.setCacheManagerConfigFile("classpath:ehcache-shiro.xml");
+        em.setCacheManager(ehCacheManagerFactoryBean().getObject());
         return em;
+    }
+
+    //操作参考：http://weiqingfei.iteye.com/blog/2311564
+    @Bean(name = "ehcache")
+    public EhCacheManagerFactoryBean ehCacheManagerFactoryBean(){
+        EhCacheManagerFactoryBean ehCacheManagerFactoryBean = new EhCacheManagerFactoryBean();
+        ehCacheManagerFactoryBean.setConfigLocation(new ClassPathResource("ehcache-shiro.xml"));
+        ehCacheManagerFactoryBean.setShared(true);
+        return ehCacheManagerFactoryBean;
     }
 
     @Bean

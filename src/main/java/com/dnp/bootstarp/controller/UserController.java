@@ -8,6 +8,8 @@ import io.swagger.annotations.ApiParam;
 
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,20 +40,21 @@ public class UserController {
     @ApiOperation(value = "查询所有用户信息" , notes = "查询所有用户信息" )
     public Object findAll(PageVo pageVo,
                           @ApiParam(name = "search" , value = "模糊查询字段" , required = false) @RequestParam(required = false, defaultValue = "" ) String search) {
-        return userService.selectById(1);
+        return userService.findById(1);
     }
 
 
     @RequestMapping(value = "/{id}" , method = RequestMethod.GET)
     @ApiOperation(value = "查询用户信息详情" , notes = "查询用户信息详情" , httpMethod = "GET" )
     public User findById(@ApiParam(name = "id" , value = "用户信息id" , required = true) @PathVariable("id" ) Integer id) {
-        return userService.selectById(id);
+        return userService.findById(id);
     }
 
     @RequestMapping(value = "/{id}" , method = RequestMethod.PUT)
     @ApiOperation(value = "修改用户信息" , notes = "修改用户信息" )
+    @CacheEvict(value = "findUserById", key = "#user.id")
     public void update(User user) {
-        userService.updateAllColumnById(user);
+        userService.updateById(user);
     }
 
     @RequestMapping(value = "" , method = RequestMethod.POST)
@@ -79,6 +82,7 @@ public class UserController {
 
     @RequestMapping(value = "/{id}" , method = RequestMethod.DELETE)
     @ApiOperation(value = "删除用户信息" , notes = "修改用户信息" )
+    @CacheEvict(value = "findUserById", allEntries = true)
     public void delete(@ApiParam(name = "id" , value = "用户信息id" , required = true) @PathVariable("id" ) Integer id) {
         userService.deleteById(id);
     }

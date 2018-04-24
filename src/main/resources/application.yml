@@ -8,7 +8,10 @@ spring:
   profiles:
 #  灵活的获取maven中的打包参数，maven中的打包参数是从打包命令中获取的
     active: @activatedProperties@
-
+  cache:
+    type: ehcache
+    ehcache:
+      config: ehcache-shiro.xml
 
 ###################  mybatis-plus配置  ###################
 mybatis-plus:

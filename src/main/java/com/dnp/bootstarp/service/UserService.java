@@ -1,7 +1,7 @@
 package com.dnp.bootstarp.service;
 
-import com.dnp.bootstarp.model.User;
 import com.baomidou.mybatisplus.service.IService;
+import com.dnp.bootstarp.model.User;
 
 /**
  * <p>
@@ -13,4 +13,5 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface UserService extends IService<User> {
 
+    User findById(int id);
 }
