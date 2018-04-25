@@ -48,8 +48,10 @@ public class OperateLogUtil {
         String servletPath = request.getServletPath();
 
         if (requestMethod.equalsIgnoreCase("get")) {
-            if (servletPath.contains("user") && StringUtils.isNotEmpty(request.getParameter("id"))) {
+            if (servletPath.contains("user/")) {
                 return ControllerMethodEmum.USER_FIND_BY_ID.getControllerMethodCode();
+            }else if (servletPath.contains("user")) {
+                return ControllerMethodEmum.USER_FIND_ALL.getControllerMethodCode();
             }
         } else if (requestMethod.equalsIgnoreCase("post")) {
             if (servletPath.contains("login")) {

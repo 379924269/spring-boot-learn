@@ -55,6 +55,20 @@
         * 注解
         * 直接在需要配置权限的地方写代码（不推荐）
         * 动态配置（可以是写到数据库里面，也可以写到配置文件里面）（推荐）
+     
+## 8、阿里巴巴数据库监控操作
+* 1、访问地址如： http://127.0.0.1/demo/druid/login.html，他是更具我们自定义的配置来的，我的配置在common.config.WebConfig中
+* 2、用户名和密码也配置在common.config.WebConfig中
+
+## 9、操作日志，参考地址：（https://blog.csdn.net/u011521890/article/details/74990338）
+* 1、通过拦截器写日志
+* 2、aop写日志
+
+## 10、验证码：
+* 用的是com.github.penggle的kaptcha包，在loginController里面有一个接口就是获取验证码的
+注意要定义个一个@Bean
+            public DefaultKaptcha kaptcha() 实现自己的验证码。
+* 验证码的一些属性可以参考地址（http://www.bubuko.com/infodetail-947567.html）
 
 ## 一些注意事项
 * springboot项目最低支持jdk1.7、tomcat8 

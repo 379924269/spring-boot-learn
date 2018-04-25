@@ -155,7 +155,7 @@ public class LoginController {
      */
     @ApiOperation(value = "获取验证码", notes = "获取验证码")
     @RequestMapping(value = "/kaptcha", method = RequestMethod.GET)
-    public void index(HttpServletRequest request, HttpServletResponse response) {
+    public void kaptcha(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
 
         response.setDateHeader("Expires", 0);

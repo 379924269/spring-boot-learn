@@ -95,12 +95,14 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         properties.put("kaptcha.session.key", "code");
         properties.put("kaptcha.textproducer.char.length", "5");
         properties.put("kaptcha.textproducer.font.names", "宋体,楷体,微软雅黑");
+        properties.put("kaptcha.textproducer.char.string", "我想你啊123456789ASDFGHJKLZXCVBNM");
         Config config = new Config(properties);
         DefaultKaptcha defaultKaptcha = new DefaultKaptcha();
         defaultKaptcha.setConfig(config);
         return defaultKaptcha;
     }
 
+    //添加自己的拦截器
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new MyInteceptor()).addPathPatterns("/**");
