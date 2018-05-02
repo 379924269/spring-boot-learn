@@ -147,8 +147,7 @@ public class ShiroConfig {
     public SimpleCookie simpleIdCookie() {
         //System.out.println("ShiroConfiguration.rememberMeCookie()");
         //这个参数是cookie的名称，对应前端的checkbox的name = rememberMe
-        SimpleCookie simpleIdCookie = new SimpleCookie();
-        simpleIdCookie.setName("sid");
+        SimpleCookie simpleIdCookie = new SimpleCookie("shiroSession");
         simpleIdCookie.setPath("/");
         //单位秒
         simpleIdCookie.setMaxAge(60 * 60 * 24 * 30);
