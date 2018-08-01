@@ -271,6 +271,7 @@ public class ShiroConfig {
         filterMap.put("/sys/login", "anon");
         filterMap.put("/captcha.jpg", "anon");
         filterMap.put("/login", "anon");
+        filterMap.put("/login/login", "anon");
         filterMap.put("/login/**", "anon");
         filterMap.put("/login/index", "anon");
         filterMap.put("/login/kickoutUrl", "anon");

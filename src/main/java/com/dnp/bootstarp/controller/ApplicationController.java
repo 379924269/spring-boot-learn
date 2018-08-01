@@ -42,7 +42,6 @@ public class ApplicationController {
     @ApiOperation(value = "查询所有应用信息" , notes = "查询所有应用信息")
     public Object findAll(@Valid PageVo pageVo,
                           @ApiParam(name = "search" , value = "模糊查询字段") @RequestParam(required = false, defaultValue = "" ) String search) {
-        System.out.println("huazai");
         LoggerUtil.info(this.getClass(),"========application============");
         Page page = new Page(pageVo.getOffset(), pageVo.getLimit());
         return applicationService.selectMapsPage(page, new EntityWrapper<Application>());
