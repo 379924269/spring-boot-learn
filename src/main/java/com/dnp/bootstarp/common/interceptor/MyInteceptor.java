@@ -27,6 +27,6 @@ public class MyInteceptor implements HandlerInterceptor {
     //拦截器处理日志，参考地址（https://blog.csdn.net/u011521890/a   rticle/details/74990338）
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        OperateLogUtil.logHandler(request, response, handler, ex);
+        //OperateLogUtil.logHandler(request, response, handler, ex);
     }
 }

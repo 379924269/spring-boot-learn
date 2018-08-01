@@ -4,6 +4,7 @@ import com.dnp.bootstarp.common.support.StrKit;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.Min;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -19,19 +20,20 @@ public class PageVo implements Serializable {
 
     // 查询时排序方式，可选，默认descasc 升序 desc降序
     @XmlAttribute
-    @ApiModelProperty(value = "升序降序字段" , dataType = "String" , required = false)
+    @ApiModelProperty(value = "升序降序字段" , dataType = "String")
     private String order;
     // 排序字段，可选，默认id
     @XmlAttribute
-    @ApiModelProperty(value = "排序字段" , dataType = "String" , required = false)
+    @ApiModelProperty(value = "排序字段" , dataType = "String")
     private String sort;
     // 查询偏移量，可选，默认0
     @XmlAttribute
-    @ApiModelProperty(value = "偏移量" , dataType = "Integer" , required = false)
+    @ApiModelProperty(value = "偏移量" , dataType = "Integer")
     private Integer offset;
     // 查询长度，可选，默认20
     @XmlAttribute
-    @ApiModelProperty(value = "页大小" , dataType = "Integer" , required = false)
+    @ApiModelProperty(value = "页大小" , dataType = "Integer")
+    @Min(value = 5, message = "not lessthen 5")
     private Integer limit;
 
     public PageVo() {

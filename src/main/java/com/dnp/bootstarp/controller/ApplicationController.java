@@ -8,19 +8,19 @@ import com.dnp.bootstarp.common.page.PageVo;
 import com.dnp.bootstarp.common.util.LoggerUtil;
 import com.dnp.bootstarp.model.Application;
 import com.dnp.bootstarp.service.ApplicationService;
-import com.github.pagehelper.PageHelper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.hibernate.validator.constraints.Length;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
 
 /**
  * <p>
@@ -32,15 +32,17 @@ import org.springframework.web.bind.annotation.*;
  */
 @Api(value = "ApplicationController" , description = "应用信息" )
 @RestController
+@Validated
 @RequestMapping(value = "/application" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class ApplicationController {
     @Autowired
     private ApplicationService applicationService;
 
     @RequestMapping(value = "" , method = RequestMethod.GET)
-    @ApiOperation(value = "查询所有应用信息" , notes = "查询所有应用信息" )
-    public Object findAll(PageVo pageVo,
-                          @ApiParam(name = "search" , value = "模糊查询字段" , required = false) @RequestParam(required = false, defaultValue = "" ) String search) {
+    @ApiOperation(value = "查询所有应用信息" , notes = "查询所有应用信息")
+    public Object findAll(@Valid PageVo pageVo,
+                          @ApiParam(name = "search" , value = "模糊查询字段") @RequestParam(required = false, defaultValue = "" ) String search) {
+        System.out.println("huazai");
         LoggerUtil.info(this.getClass(),"========application============");
         Page page = new Page(pageVo.getOffset(), pageVo.getLimit());
         return applicationService.selectMapsPage(page, new EntityWrapper<Application>());
@@ -49,7 +51,7 @@ public class ApplicationController {
 
     @RequestMapping(value = "/{id}" , method = RequestMethod.GET)
     @ApiOperation(value = "查询应用信息详情" , notes = "查询应用信息详情" , httpMethod = "GET" )
-    public Application findById(@ApiParam(name = "id" , value = "应用信息id" , required = true) @PathVariable("id" ) Integer id) {
+    public Application findById(@Min(value = 5, message = "参数最小为5") @ApiParam(name = "id" , value = "应用信息id" , required = true) @PathVariable("id" ) Integer id) {
         return applicationService.selectById(id);
     }
 
