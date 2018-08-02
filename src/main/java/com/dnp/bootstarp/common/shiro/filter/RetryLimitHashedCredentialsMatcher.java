@@ -1,5 +1,6 @@
 package com.dnp.bootstarp.common.shiro.filter;
 
+import com.dnp.bootstarp.common.util.LoggerUtil;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.cache.Cache;
@@ -24,6 +25,9 @@ public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher
     @Override
     public boolean doCredentialsMatch(AuthenticationToken token,
         AuthenticationInfo info) {
+
+        LoggerUtil.info(this.getClass(), "===登陆错误限制5次锁定10分钟===");
+
         String username = (String) token.getPrincipal();
 
         // retry count + 1

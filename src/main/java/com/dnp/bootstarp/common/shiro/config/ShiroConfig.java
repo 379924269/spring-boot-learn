@@ -72,12 +72,10 @@ public class ShiroConfig {
     }
 
     @Bean(name = "securityManager")
-    public DefaultSecurityManager securityManager(EhCacheManager ehCacheManager, MyRealm myRealm, CookieRememberMeManager cookieRememberMeManager) {
+    public DefaultSecurityManager securityManager(EhCacheManager ehCacheManager, MyRealm myRealm) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(myRealm);
-        securityManager.setSessionManager(sessionManager());
         securityManager.setCacheManager(ehCacheManager);
-        securityManager.setRememberMeManager(cookieRememberMeManager);
         return securityManager;
     }
 
@@ -113,56 +111,11 @@ public class ShiroConfig {
     @Bean(name = "sessionManager")
     public DefaultWebSessionManager sessionManager() {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
-        sessionManager.setSessionDAO(sessionDAO());
-        sessionManager.setSessionIdCookie(simpleIdCookie());
-        sessionManager.setSessionIdCookieEnabled(true);
-        sessionManager.setSessionIdUrlRewritingEnabled(false);
-        sessionManager.setSessionValidationScheduler(executorServiceSessionValidationScheduler());
-        sessionManager.setDeleteInvalidSessions(true);
         //设置session过期时间为1小时(单位：毫秒)，默认为30分钟
+        sessionManager.setGlobalSessionTimeout(1 * 60 * 1000);
+        sessionManager.setSessionValidationSchedulerEnabled(true);
+        sessionManager.setSessionIdUrlRewritingEnabled(false);
         return sessionManager;
-    }
-
-    /**
-     * 会话存储/持久化,Shiro提供SessionDAO用于会话的CRUD
-     *
-     * @return
-     */
-    @Bean
-    public EnterpriseCacheSessionDAO sessionDAO() {
-        // Ehcache缓存
-        EnterpriseCacheSessionDAO sessionDAO = new EnterpriseCacheSessionDAO();
-        sessionDAO.setActiveSessionsCacheName("shiro-activeSessionCache");
-        sessionDAO.setSessionIdGenerator(sessionIdGenerator());
-        return sessionDAO;
-    }
-
-    @Bean
-    public JavaUuidSessionIdGenerator sessionIdGenerator() {
-        // Ehcache缓存
-        return new JavaUuidSessionIdGenerator();
-    }
-
-    @Bean
-    public SimpleCookie simpleIdCookie() {
-        //System.out.println("ShiroConfiguration.rememberMeCookie()");
-        //这个参数是cookie的名称，对应前端的checkbox的name = rememberMe
-        SimpleCookie simpleIdCookie = new SimpleCookie("shiroSession");
-        simpleIdCookie.setPath("/");
-        //单位秒
-        simpleIdCookie.setMaxAge(60 * 60 * 24 * 30);
-        simpleIdCookie.setHttpOnly(true);
-
-        return simpleIdCookie;
-    }
-
-    @Bean
-    public ExecutorServiceSessionValidationScheduler executorServiceSessionValidationScheduler() {
-        // Ehcache缓存
-        ExecutorServiceSessionValidationScheduler executorServiceSessionValidationScheduler = new ExecutorServiceSessionValidationScheduler();
-        //毫秒
-        executorServiceSessionValidationScheduler.setInterval(1000 * 60 * 60);
-        return executorServiceSessionValidationScheduler;
     }
 
     @Bean
@@ -182,33 +135,6 @@ public class ShiroConfig {
         ehCacheManagerFactoryBean.setShared(true);
         return ehCacheManagerFactoryBean;
     }
-
-    @Bean
-    public SimpleCookie rememberMeCookie() {
-        //System.out.println("ShiroConfiguration.rememberMeCookie()");
-        //这个参数是cookie的名称，对应前端的checkbox的name = rememberMe
-        SimpleCookie simpleCookie = new SimpleCookie("rememberMe");
-        //<!-- 记住我cookie生效时间30天 ,单位秒;-->
-        simpleCookie.setMaxAge(259200);
-        return simpleCookie;
-    }
-
-    /**
-     * cookie管理对象;
-     * rememberMeManager()方法是生成rememberMe管理器，而且要将这个rememberMe管理器设置到securityManager中
-     *
-     * @return
-     */
-    @Bean
-    public CookieRememberMeManager rememberMeManager() {
-        //System.out.println("ShiroConfiguration.rememberMeManager()");
-        CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
-        cookieRememberMeManager.setCookie(rememberMeCookie());
-        //rememberMe cookie加密的密钥 建议每个项目都不一样 默认AES算法 密钥长度(128 256 512 位)
-        cookieRememberMeManager.setCipherKey(Base64.decode("2AvVhdsgUs0FSA3SDFAdag=="));
-        return cookieRememberMeManager;
-    }
-
 
     @Bean(name = "lifecycleBeanPostProcessor")
     public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
@@ -282,10 +208,5 @@ public class ShiroConfig {
         filterMap.put("/favicon.ico", "anon");
         filterMap.put("/**", "authc, kickout");
         return filterMap;
-    }
-
-    @PostConstruct
-    public void postConstruct() {
-        System.out.println("=========PostConstruct=============");
     }
 }

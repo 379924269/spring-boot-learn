@@ -1,5 +1,6 @@
 package com.dnp.bootstarp.common.shiro.filter;
 
+import com.dnp.bootstarp.common.util.LoggerUtil;
 import com.dnp.bootstarp.model.User;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheManager;
@@ -67,6 +68,9 @@ public class KickoutSessionControlFilter extends AccessControlFilter {
 	@Override
 	protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
 		Subject subject = getSubject(request, response);
+
+		LoggerUtil.info(this.getClass(), "===挤下线判断，后面挤下前面的===");
+
 		if (!subject.isAuthenticated() && !subject.isRemembered()) {
 			// 如果没有登录，直接进行之后的流程
 			return true;

@@ -1,6 +1,7 @@
 package com.dnp.bootstarp.common.shiro;
 
 import com.dnp.bootstarp.common.support.StrKit;
+import com.dnp.bootstarp.common.util.LoggerUtil;
 import com.dnp.bootstarp.common.util.MD5Util;
 import com.dnp.bootstarp.dao.ResourceMapper;
 import com.dnp.bootstarp.dao.UserMapper;
@@ -45,6 +46,9 @@ public class MyRealm extends AuthorizingRealm {
             }
 
         }
+
+        LoggerUtil.info(this.getClass(), "=======授权==========");
+
         return info;
     }
 
@@ -59,6 +63,9 @@ public class MyRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
         User user = userMapper.selectByName(token.getUsername());
+
+        LoggerUtil.info(this.getClass(), "=======认证==========");
+
         if (!StrKit.isEmpty(user.getEmail())) {
             SimpleAuthenticationInfo sai = new SimpleAuthenticationInfo(user, MD5Util.encrypt(user.getPassword()), super.getName());
             return sai;

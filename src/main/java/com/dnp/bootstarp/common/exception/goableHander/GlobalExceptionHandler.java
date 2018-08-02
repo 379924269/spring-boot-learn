@@ -44,6 +44,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorTip exception(Exception e) {
+        e.printStackTrace();
         logger.error("业务异常:", e.getMessage());
         return new ErrorTip(500, e.getMessage());
     }
