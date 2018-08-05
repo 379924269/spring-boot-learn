@@ -26,42 +26,42 @@ import com.dnp.bootstarp.common.page.PageVo;
  * @author stylefeng
  * @since 2017-08-09
  */
-@Api(value = "ResRoleController" , description = "资源角色关系信息" )
+@Api(value = "ResRoleController", description = "资源角色关系信息")
 @RestController
-@RequestMapping(value = "/resRole" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = "/resRole", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class ResRoleController {
     @Autowired
     private ResRoleService resRoleService;
 
-    @RequestMapping(value = "" , method = RequestMethod.GET)
-    @ApiOperation(value = "查询所有资源角色关系信息" , notes = "查询所有资源角色关系信息" )
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    @ApiOperation(value = "查询所有资源角色关系信息", notes = "查询所有资源角色关系信息")
     public Object findAll(PageVo pageVo,
-                          @ApiParam(name = "search" , value = "模糊查询字段" , required = false) @RequestParam(required = false, defaultValue = "" ) String search) {
+                          @ApiParam(name = "search", value = "模糊查询字段", required = false) @RequestParam(required = false, defaultValue = "") String search) {
         return null;
     }
 
 
-    @RequestMapping(value = "/{id}" , method = RequestMethod.GET)
-    @ApiOperation(value = "查询资源角色关系信息详情" , notes = "查询资源角色关系信息详情" , httpMethod = "GET" )
-    public ResRole findById(@ApiParam(name = "id" , value = "资源角色关系信息id" , required = true) @PathVariable("id" ) Integer id) {
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @ApiOperation(value = "查询资源角色关系信息详情", notes = "查询资源角色关系信息详情", httpMethod = "GET")
+    public ResRole findById(@ApiParam(name = "id", value = "资源角色关系信息id", required = true) @PathVariable("id") Integer id) {
         return resRoleService.selectById(id);
     }
 
-    @RequestMapping(value = "/{id}" , method = RequestMethod.PUT)
-    @ApiOperation(value = "修改资源角色关系信息" , notes = "修改资源角色关系信息" )
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @ApiOperation(value = "修改资源角色关系信息", notes = "修改资源角色关系信息")
     public void update(ResRole resRole) {
         resRoleService.updateAllColumnById(resRole);
     }
 
-    @RequestMapping(value = "" , method = RequestMethod.POST)
-    @ApiOperation(value = "添加资源角色关系信息" , notes = "添加资源角色关系信息" )
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    @ApiOperation(value = "添加资源角色关系信息", notes = "添加资源角色关系信息")
     public void save(
 
-            @ApiParam(name = "resourceId" , value = "资源id" )
-            @RequestParam(required = false, name = "resourceId" ) Integer resourceId
+            @ApiParam(name = "resourceId", value = "资源id")
+            @RequestParam(required = false, name = "resourceId") Integer resourceId
             ,
-            @ApiParam(name = "roleId" , value = "角色id" )
-            @RequestParam(required = false, name = "roleId" ) Integer roleId
+            @ApiParam(name = "roleId", value = "角色id")
+            @RequestParam(required = false, name = "roleId") Integer roleId
     ) {
         ResRole resRole = new ResRole(
 
@@ -69,9 +69,9 @@ public class ResRoleController {
         resRoleService.insertAllColumn(resRole);
     }
 
-    @RequestMapping(value = "/{id}" , method = RequestMethod.DELETE)
-    @ApiOperation(value = "删除资源角色关系信息" , notes = "修改资源角色关系信息" )
-    public void delete(@ApiParam(name = "id" , value = "资源角色关系信息id" , required = true) @PathVariable("id" ) Integer id) {
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @ApiOperation(value = "删除资源角色关系信息", notes = "修改资源角色关系信息")
+    public void delete(@ApiParam(name = "id", value = "资源角色关系信息id", required = true) @PathVariable("id") Integer id) {
         resRoleService.deleteById(id);
     }
 

@@ -3,16 +3,22 @@ package com.dnp.bootstarp.common.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 /**
  * @author 华仔
  * @date 2018/4/12 14:50
  */
+@Component
 public class LoggerUtil {
-    @Value("${demo.logger-open}")
+    @Value("${huazai.logger}")
     private boolean loggerOpen;
+
+    @Value("${spring.datasource.url}")
+    private String url;
+
     private Logger getLogger(Class clazz) {
-        System.out.println("==========" + loggerOpen);
+        System.out.println("===url====" + url);
         return LoggerFactory.getLogger(clazz);
     }
 

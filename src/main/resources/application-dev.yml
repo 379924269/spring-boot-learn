@@ -2,6 +2,8 @@
 server:
   port: 80
   context-path: /demo/
+  tomcat:
+    uri-encoding: UTF-8
 
 #  swagger开关, logger调试日志开关
 demo:

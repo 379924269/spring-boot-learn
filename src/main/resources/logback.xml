@@ -37,9 +37,9 @@
     <appender name="springboot" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!--如果不知道日志在哪里，可以看下README中说明-->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>../logs/demo_%d{yyyy-M-d}.log</FileNamePattern>
+            <FileNamePattern>/logs/demo_%d{yyyy-M-d}.log</FileNamePattern>
             <!-- 保留天数 -->
-            <MaxHistory>30</MaxHistory>
+            <MaxHistory>1</MaxHistory>
         </rollingPolicy>
         <encoder>
             <pattern>%d {ptt} %p [%c] - %m%n</pattern>

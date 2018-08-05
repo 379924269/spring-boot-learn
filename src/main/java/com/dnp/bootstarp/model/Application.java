@@ -116,6 +116,11 @@ public class Application extends Model<Application> {
     @ApiModelProperty(value = "应用描述" , dataType = "String" )
     private String description;
 
+    @TableField(exist = false)
+    @XmlAttribute
+    @ApiModelProperty(value = "不是数据库字段" , dataType = "String" )
+    private String huazai;
+
 
     public Application() {
     }
@@ -241,6 +246,14 @@ public class Application extends Model<Application> {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getHuazai() {
+        return huazai;
+    }
+
+    public void setHuazai(String huazai) {
+        this.huazai = huazai;
     }
 
     @Override

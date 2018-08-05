@@ -33,7 +33,6 @@ public class PageVo implements Serializable {
     // 查询长度，可选，默认20
     @XmlAttribute
     @ApiModelProperty(value = "页大小" , dataType = "Integer")
-    @Min(value = 5, message = "not lessthen 5")
     private Integer limit;
 
     public PageVo() {
